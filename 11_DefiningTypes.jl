@@ -8,16 +8,30 @@ end
 
 
 type Rectangle <: Shape
-    t1::Tuple
-    t2::Tuple
-    #width::Float64 = abs(t2[1]-t1[1])
-    #height::Float64 = abs(t2[2]-t2[2])
+    x::Float64
+    y::Float64
+    width::Float64
+    height::Float64
 end
 
 
 type ShapeGroup <: Shape
     members::Vector{Shape}
 end
+
+
+typealias Point Union{Tuple{Float64,Float64}, Tuple{Int64,Int64}}
+
+
+"Create rectangle from to points `p` at the top left corner and `q` at the lower right corner"
+function Rectangle(p::Point,q::Point)
+    px,py = p
+    qx,qy = q
+    w = qx - px
+    h = qy - py
+    Rectangle(px,py,w,h)
+end
+
 
 "Group shapes into a group, which can be treated as a shape itself"
 function group(shapes::Shape...)
@@ -30,12 +44,13 @@ getposition(c::Circle) = (c.x,c.y)
 
 
 "Get position of Rectangle"
-getposition(r::Rectangle) = r.t2
+getposition(r::Rectangle) = (r.x,r.y)
 
 
 # Inform implementer of Shape subtypes of required functions
 getposition(s::Shape) = error("You must implement for Shape")
 setposition(s::Shape, x, y) = error("You must implement this function for Shape")
+
 
 "Set absolute position of center of Circle"
 function setposition(c::Circle,x,y) # If you cast the type on the function 
@@ -43,18 +58,20 @@ function setposition(c::Circle,x,y) # If you cast the type on the function
     c.y = y                         # that is no type inference or conversion will be made
 end
 
+
 "Set absolute position upper left corner of Rectangle"
-function setposition(r::Rectangle,x::Tuple)
-    r.t2 = x                                           
-    r.t1[1] = r.t1[1] + x[1]
-    r.t1[2] = r.t1[2] + x[2]
+function setposition(r::Rectangle,x,y)
+    r.x = x
+    r.y = y 
 end
+
 
 "Move Shape by `dx` units along the x-axis and `dy` units across the y-axis"
 function move(s::Shape,dx,dy)
     x,y = getposition(s)
     setposition(s,x+dx,y+dy)
 end
+
 
 "Check if point at `(x,y)` is inside circle"
 function inside(c::Circle,x,y)
@@ -63,33 +80,28 @@ function inside(c::Circle,x,y)
     hypot(dx,dy) <= c.radius
 end
 
+
 "Check if point at `(x,y)` is inside rectangle"
-function inside(r::Rectangle,x::Tuple)
-    r.t1[1] <= x[1] <= r.t2[1] &&
-    r.t1[2] <= x[2] <= r.t2[2]
+function inside(r::Rectangle,x,y)
+    r.x <= x <= r.x + r.width &&
+    r.y <= y <= r.y + r.height
 end
+
+inside(s::Shape,p::Point) = inside(s,p...)
+
 
 "Check if point at `(x,y)` is inside one of the shapes in the group"
 function inside(g::ShapeGroup,x,y)
     for m in g.members
-        if string(typeof(m)) == "Rectangle"
-            println(inside(m,(x,y)))
-        elseif string(typeof(m)) == "Circle"
-            println(inside(m,x,y))
+        if inside(m,x,y)
+            return true 
         end
     end
+    false
 end
 
-"Check if point at `(x,y)` defined as a tuple is inside one of the shapes in the group"
-function inside(g::ShapeGroup,x::Tuple)
-    for m in g.members
-        if string(typeof(m)) == "Rectangle"
-            println(inside(m,x))
-        elseif string(typeof(m)) == "Circle"
-            println(inside(m,x...))
-        end
-    end
-end
+# Inform implementer of Shape subtypes of required functions
+inside(s::Shape,x,y) = error("You have to implement inside for Shape")
 
 # TESTING CODE
 
