@@ -22,6 +22,12 @@ end
 
 typealias Point Union{Tuple{Float64,Float64}, Tuple{Int64,Int64}}
 
+"Create circle from point and radius"
+function Circle(p::Point,radius)
+    px,py = p
+    Circle(px,py,radius)
+end
+
 
 "Create rectangle from to points `p` at the top left corner and `q` at the lower right corner"
 function Rectangle(p::Point,q::Point)
