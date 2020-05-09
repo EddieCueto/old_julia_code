@@ -4,6 +4,8 @@ println(s)
 
 stream = open("elements.txt","r")
 
+println(supertype(IOStream))
+
 line = readline(stream)
 
 println(line)
@@ -20,6 +22,14 @@ println(readline(stream))
 println(read(stream, Int8))
 
 println(readstring(stream))
+
+println(eof(stream))
+
+close(stream)
+
+open(readlines,"elements.txt")
+
+#@edit readstring("elements.txt")
 
 myread(s::IOStream) = read(s,Char)
 
@@ -46,4 +56,5 @@ open("alpha.txt", "w") do io
     for ch in 'A':'Z'
         write(io, ch)
     end
+    write(io,"\n")
 end
