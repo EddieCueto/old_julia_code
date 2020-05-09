@@ -65,15 +65,17 @@ end
 
 "Check if point at `(x,y)` is inside rectangle"
 function inside(r::Rectangle,x::Tuple)
-    r.x <= x <= r.r + r.width &&
-    r.y <= y <= r.y + r.height
+    r.t1[1] <= x[1] <= r.t2[1] &&
+    r.t1[2] <= x[2] <= r.t2[2]
 end
 
 "Check if point at `(x,y)` is inside one of the shapes in the group"
 function inside(g::ShapeGroup,x,y)
     for m in g.members
-        if inside(m,x,y)
-            return true
+        if string(typeof(m)) == "Rectangle"
+            println(inside(m,(x,y)))
+        elseif string(typeof(m)) == "Circle"
+            println(inside(m,x,y))
         end
     end
 end
@@ -81,8 +83,10 @@ end
 "Check if point at `(x,y)` defined as a tuple is inside one of the shapes in the group"
 function inside(g::ShapeGroup,x::Tuple)
     for m in g.members
-        if inside(m,x)
-            return true
+        if string(typeof(m)) == "Rectangle"
+            println(inside(m,x))
+        elseif string(typeof(m)) == "Circle"
+            println(inside(m,x...))
         end
     end
 end
