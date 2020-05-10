@@ -1,4 +1,4 @@
-conn = connect(1234)
+conn = connect(1234) # Defaults lo localhost
 
 write(conn, "Hello  world!\n")
 
@@ -14,3 +14,4 @@ end
 t = Task(foo)
 
 consume(t)
+
