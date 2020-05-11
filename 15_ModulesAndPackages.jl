@@ -1,5 +1,5 @@
 workspace()
-push!(LOAD_PATH, "/Users/eddie/Documents/Programming/Julia")
+push!(LOAD_PATH, ".")
 using Volume
 
 println(LOAD_PATH)
