@@ -1,3 +1,4 @@
+# THIS CODE IS DEPRECATED
 Pkg.add("Colors")
 
 Pkg.resolve()
