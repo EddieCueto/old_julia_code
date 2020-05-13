@@ -5,5 +5,10 @@
 # now we have to use in julia REPL ] then add "Package name"
 
 import PkgDev
+using Pkg
 
 PkgDev.enable_pkgbutler("Volume")
+
+Pkg.test("Volume")
+
+
