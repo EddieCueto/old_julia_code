@@ -1,4 +1,4 @@
-abstract Shape
+abstract type Shape end
 
 type Circle <: Shape
     x::Float64
