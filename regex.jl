@@ -1,6 +1,6 @@
-numchar = "500W"
+numchar = "0W"
 
-renumchar = r"\d[0-9]."
+renumchar = r"(\d+)"
 
 num = match(renumchar,numchar)
 
