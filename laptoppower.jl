@@ -62,3 +62,14 @@ usedram = parse(Float32,ram[3])
 totalram = parse(Float32,ram[2])
 
 println("The amount of power draw of the RAM is ram $(((usedram*1.575)/totalram)*1.904) Watts.")
+
+currenttime = Dates.Time(Dates.now())
+firstrun = 1
+while (Dates.Time(Dates.now()) - currenttime).value / 1000000000.0 < 60.0
+    if firstrun == 1
+        asyresult = run(cpuusage,wait = false)
+        #println("I entered here once......")
+        #println((Dates.Time(Dates.now()) - currenttime).value / 1000000000.0)
+    end
+    firstrun += 1
+end
